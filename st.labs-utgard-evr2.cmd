@@ -5,7 +5,7 @@ epicsEnvSet("EVR", "$(DEVICE)")
 epicsEnvSet("CHIC_SYS", "LabS-Utgard-VIP:")
 epicsEnvSet("CHOP_DRV", "Chop-Drv-02")
 epicsEnvSet("CHIC_DEV", "TS-$(DEVICE)")
-
+epicsEnvSet("MRF_HW_DB", "evr-pcie-300dc-ess.db")
 epicsEnvSet("E3_MODULES", "/epics/iocs/e3")
 epicsEnvSet("EPICS_CMDS", "/epics/iocs/cmds")
 
