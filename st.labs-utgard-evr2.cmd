@@ -1,3 +1,6 @@
+require evr-timestamp-buffer,0.1.0a
+require evrseq,0.1.0
+
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
 epicsEnvSet("PCI_SLOT", "1:0.0")
 epicsEnvSet("DEVICE", "EVR-2")
@@ -15,11 +18,22 @@ epicsEnvSet("NCG_SYS", "LabS-VIP:")
 epicsEnvSet("NCG_DRV", "Chop-Drv-01:")
 ##################################################
 
-< "$(EPICS_CMDS)/mrfioc2-common/st.evr.cmd"
+< "$(EPICS_CMDS)/mrfioc2-common-cmd/st.evr.cmd"
+
+# Load timestamp buffer database
+iocshLoad("$(evr-timestamp-buffer_DIR)/evr-timestamp-buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS)")
+
+# Load the sequencer configuration script
+iocshLoad("$(evrseq_DIR)/evrseq.iocsh", "DEV1=$(CHOP_DRV)01:, DEV2=$(CHOP_DRV)02:, DEV3=$(CHOP_DRV)03:, DEV4=$(CHOP_DRV)04:, SYS_EVRSEQ=$(CHIC_SYS), EVR_EVRSEQ=$(CHIC_DEV):, NCG_SYS=$(NCG_SYS), NCG_DRV=$(NCG_DRV)")
+
+iocInit()
+
+# Global default values
+# Set the frequency that the EVR expects from the EVG for the event clock
+dbpf $(SYS)-$(DEVICE):Time-Clock-SP 88.0525
 
 # Set delay compensation target. This is required even when delay compensation
 # is disabled to avoid occasionally corrupting timestamps.
-#dbpf $(SYS)-$(DEVICE):DC-Tgt-SP 70
 dbpf $(SYS)-$(DEVICE):DC-Tgt-SP 100
 
 ######### INPUTS #########
@@ -75,15 +89,22 @@ dbpf $(SYS)-$(DEVICE):SoftSeq0-Enable-Cmd 1
 # Select run mode, "Single" needs a new Enable-Cmd every time, "Normal" needs Enable-Cmd once
 dbpf $(SYS)-$(DEVICE):SoftSeq0-RunMode-Sel "Normal"
 
+# Load sequence events and corresponding tick lists
+#system "/bin/bash /epics/iocs/cmds/labs-utgard-evr2/conf_evr_seq.sh"
+
+# Use ticks or microseconds
+dbpf $(SYS)-$(DEVICE):SoftSeq0-TsResolution-Sel "Ticks"
+
 # Select trigger source for soft seq 0, trigger source 0, delay gen 0
 dbpf $(SYS)-$(DEVICE):SoftSeq0-TrigSrc-0-Sel 0
 
+# Commit all the settings for the sequnce
+# commit-cmd by evrseq!!! dbpf $(SYS)-$(DEVICE):SoftSeq0-Commit-Cmd "1"
+
 dbpf $(CHIC_SYS)$(CHOP_DRV)01:Freq-SP 28
 dbpf $(CHIC_SYS)$(CHOP_DRV)01:Tube-Pos-Delay 10
-dbpf $(CHIC_SYS)$(CHOP_DRV)02:Freq-SP 28
-dbpf $(CHIC_SYS)$(CHOP_DRV)02:Tube-Pos-Delay 20
-# Check that this command is required.
-#dbpf $(SYS)-$(DEVICE):RF-Freq 88052500
+#dbpf $(CHIC_SYS)$(CHOP_DRV)02:Freq-SP 28
+#dbpf $(CHIC_SYS)$(CHOP_DRV)02:Tube-Pos-Delay 20
 
 # Hints for setting input PVs from client
 #caput -a $(SYS)-$(DEVICE):SoftSeq0-EvtCode-SP 2 17 18
@@ -91,10 +112,4 @@ dbpf $(CHIC_SYS)$(CHOP_DRV)02:Tube-Pos-Delay 20
 #caput -n $(SYS)-$(DEVICE):SoftSeq0-Commit-Cmd 1
 ######### TIME STAMP #########
 
-#Forward links to esschicTimestampBuffer.template
-#dbpf $(SYS)-$(DEVICE):EvtACnt-I.FLNK $(CHIC_SYS)$(CHOP_DRV):TDC
-#dbpf $(SYS)-$(DEVICE):EvtECnt-I.FLNK $(CHIC_SYS)$(CHOP_DRV):Ref
-
-#dbpf $(SYS)-$(DEVICE):EvtBCnt-I.FLNK $(CHIC_SYS)$(CHOP_DRV):TDC
-#dbpf $(CHIC_SYS)$(CHOP_DRV)01:BPFO.LNK3 $(CHIC_SYS)$(CHOP_DRV):Ref
 
