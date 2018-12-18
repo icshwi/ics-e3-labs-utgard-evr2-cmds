@@ -1,4 +1,4 @@
-require evr-timestamp-buffer,0.1.0a
+require evr_timestamp_buffer,0.1.0
 require evrseq,0.1.0
 
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
@@ -21,7 +21,7 @@ epicsEnvSet("NCG_DRV", "Chop-Drv-01:")
 < "$(EPICS_CMDS)/mrfioc2-common-cmd/st.evr.cmd"
 
 # Load timestamp buffer database
-iocshLoad("$(evr-timestamp-buffer_DIR)/evr-timestamp-buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS)")
+iocshLoad("$(evr-timestamp-buffer_DIR)/evr_timestamp_buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS)")
 
 # Load the sequencer configuration script
 iocshLoad("$(evrseq_DIR)/evrseq.iocsh", "DEV1=$(CHOP_DRV)01:, DEV2=$(CHOP_DRV)02:, DEV3=$(CHOP_DRV)03:, DEV4=$(CHOP_DRV)04:, SYS_EVRSEQ=$(CHIC_SYS), EVR_EVRSEQ=$(CHIC_DEV):, NCG_SYS=$(NCG_SYS), NCG_DRV=$(NCG_DRV)")
