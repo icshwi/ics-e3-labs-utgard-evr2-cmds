@@ -1,5 +1,5 @@
-require evr_timestamp_buffer,0.1.0
-require evrseq,0.1.0
+require evr_timestamp_buffer,0.1.1
+require evrseq,0.2.0
 
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
 epicsEnvSet("PCI_SLOT", "1:0.0")
@@ -105,6 +105,7 @@ dbpf $(CHIC_SYS)$(CHOP_DRV)01:Freq-SP 28
 dbpf $(CHIC_SYS)$(CHOP_DRV)01:Tube-Pos-Delay 10
 #dbpf $(CHIC_SYS)$(CHOP_DRV)02:Freq-SP 28
 #dbpf $(CHIC_SYS)$(CHOP_DRV)02:Tube-Pos-Delay 20
+
 
 # Hints for setting input PVs from client
 #caput -a $(SYS)-$(DEVICE):SoftSeq0-EvtCode-SP 2 17 18
