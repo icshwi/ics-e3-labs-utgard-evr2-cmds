@@ -1,4 +1,4 @@
-require evr_timestamp_buffer,0.1.1
+require evr_timestamp_buffer,0.3.0
 require evrseq,0.2.0
 
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
@@ -8,6 +8,7 @@ epicsEnvSet("EVR", "$(DEVICE)")
 epicsEnvSet("CHIC_SYS", "LabS-Utgard-VIP:")
 epicsEnvSet("CHOP_DRV", "Chop-Drv-02")
 epicsEnvSet("CHIC_DEV", "TS-$(DEVICE)")
+epicsEnvSet("BUFFSIZE", "100")
 epicsEnvSet("MRF_HW_DB", "evr-pcie-300dc-ess.db")
 epicsEnvSet("E3_MODULES", "/epics/iocs/e3")
 epicsEnvSet("EPICS_CMDS", "/epics/iocs/cmds")
@@ -21,7 +22,7 @@ epicsEnvSet("NCG_DRV", "Chop-Drv-01:")
 < "$(EPICS_CMDS)/mrfioc2-common-cmd/st.evr.cmd"
 
 # Load timestamp buffer database
-iocshLoad("$(evr_timestamp_buffer_DIR)/evr_timestamp_buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS)")
+iocshLoad("$(evr_timestamp_buffer_DIR)/evr_timestamp_buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS), BUFFSIZE=$(BUFFSIZE)")
 
 # Load the sequencer configuration script
 iocshLoad("$(evrseq_DIR)/evrseq.iocsh", "DEV1=$(CHOP_DRV)01:, DEV2=$(CHOP_DRV)02:, DEV3=$(CHOP_DRV)03:, DEV4=$(CHOP_DRV)04:, SYS_EVRSEQ=$(CHIC_SYS), EVR_EVRSEQ=$(CHIC_DEV):, NCG_SYS=$(NCG_SYS), NCG_DRV=$(NCG_DRV)")
