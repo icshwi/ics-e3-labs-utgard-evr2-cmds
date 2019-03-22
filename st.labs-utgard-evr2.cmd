@@ -110,3 +110,4 @@ dbpf $(CHIC_SYS)$(CHOP_DRV)01:Tube-Pos-Delay 10
 ######### TIME STAMP #########
 
 dbpf LabS-Utgard-VIP:Chop-Drv-0101:Freq-SP.INP "LabS-VIP:Chop-Drv-0101:Spd_SP CPP"
+dbpf LabS-Utgard-VIP:Chop-Drv-0102:Freq-SP.INP "LabS-VIP:Chop-Drv-0101:Spd_SP CPP"
