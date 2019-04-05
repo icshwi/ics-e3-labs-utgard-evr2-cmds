@@ -1,5 +1,5 @@
-require evr_timestamp_buffer,test
-require evrseq,0.2.1
+require evr_timestamp_buffer,2.6.0
+require evr_seq_calc,0.9.0
 
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
 epicsEnvSet("PCI_SLOT", "1:0.0")
@@ -20,7 +20,7 @@ epicsEnvSet("EPICS_CMDS", "/epics/iocs/cmds")
 iocshLoad("$(evr_timestamp_buffer_DIR)/evr_timestamp_buffer.iocsh", "CHIC_SYS=$(CHIC_SYS), CHIC_DEV=$(CHIC_DEV), CHOP_DRV=$(CHOP_DRV), SYS=$(SYS), BUFFSIZE=$(BUFFSIZE)")
 
 # Load the sequencer configuration script
-iocshLoad("$(evrseq_DIR)/evrseq.iocsh", "DEV1=$(CHOP_DRV)01:, DEV2=$(CHOP_DRV)02:, DEV3=$(CHOP_DRV)03:, DEV4=$(CHOP_DRV)04:, SYS_EVRSEQ=$(CHIC_SYS), EVR_EVRSEQ=$(CHIC_DEV):")
+iocshLoad("$(evr_seq_calc_DIR)/evr_seq_calc.iocsh", "DEV1=$(CHOP_DRV)01:, DEV2=$(CHOP_DRV)02:, DEV3=$(CHOP_DRV)03:, DEV4=$(CHOP_DRV)04:, SYS_EVRSEQ=$(CHIC_SYS), EVR_EVRSEQ=$(CHIC_DEV):")
 
 iocInit()
 
@@ -96,11 +96,6 @@ dbpf $(SYS)-$(DEVICE):SoftSeq0-TrigSrc-0-Sel 0
 
 # Commit all the settings for the sequnce
 # commit-cmd by evrseq!!! dbpf $(SYS)-$(DEVICE):SoftSeq0-Commit-Cmd "1"
-
-dbpf $(CHIC_SYS)$(CHOP_DRV)01:Freq-SP 28
-dbpf $(CHIC_SYS)$(CHOP_DRV)01:Tube-Pos-Delay 10
-#dbpf $(CHIC_SYS)$(CHOP_DRV)02:Freq-SP 28
-#dbpf $(CHIC_SYS)$(CHOP_DRV)02:Tube-Pos-Delay 20
 
 
 # Hints for setting input PVs from client
