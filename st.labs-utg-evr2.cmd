@@ -1,5 +1,5 @@
-require evr_timestamp_buffer,2.6.0
-require evr_seq_calc,0.9.0
+require evr_timestamp_buffer,v2.6.1
+require evr_seq_calc,v0.9.2
 
 epicsEnvSet("SYS", "LabS-Utgard-VIP:TS")
 epicsEnvSet("PCI_SLOT", "1:0.0")
@@ -76,6 +76,9 @@ dbpf $(SYS)-$(DEVICE):DlyGen3-Evt-Trig0-SP 18
 dbpf $(SYS)-$(DEVICE):OutFPUV03-Src-SP 3 #Connect output3 to DlyGen-3
 
 ######## Sequencer #########
+#dbpf $(SYS)-$(DEVICE):Base-Freq 14.00000064
+dbpf $(SYS)-$(DEVICE):End-Event-Ticks 4
+
 # Load sequencer setup
 dbpf $(SYS)-$(DEVICE):SoftSeq0-Load-Cmd 1
 
