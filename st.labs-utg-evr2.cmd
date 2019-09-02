@@ -27,6 +27,8 @@ iocInit()
 # Global default values
 # Set the frequency that the EVR expects from the EVG for the event clock
 dbpf $(SYS)-$(DEVICE):Time-Clock-SP 88.0525
+dbpf $(SYS)-$(DEVICE):Link-Clk-SP 88.0525
+dbpf $(SYS)-$(DEVICE):Ena-Sel "Enabled"
 
 # Set delay compensation target. This is required even when delay compensation
 # is disabled to avoid occasionally corrupting timestamps.
